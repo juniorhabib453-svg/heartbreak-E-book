@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Digital Wello</title>
+</head>
+<body>
+
+<h1>Digital Wello</h1>
+<p>Connecting buyers and sellers in Wello</p>
+
+<h2>Add Product</h2>
+
+<form id="productForm">
+  <input type="text" id="name" placeholder="Product Name" required><br><br>
+  <input type="text" id="price" placeholder="Price" required><br><br>
+  <input type="text" id="seller" placeholder="Seller Name" required><br><br>
+  <input type="text" id="phone" placeholder="Phone Number" required><br><br>
+  <button type="submit">Add Product</button>
+</form>
+
+<hr>
+
+<h2>Product List</h2>
+<div id="products"></div>
+
+<script>
+let products = JSON.parse(localStorage.getItem("products")) || [];
+
+function displayProducts() {
+  let container = document.getElementById("products");
+  container.innerHTML = "";
+
+  products.forEach(p => {
+    let div = document.createElement("div");div.style.border = "1px solid black";
+div.style.padding = "10px";
+div.style.margin = "10px 0";
+    div.innerHTML = `
+      <h3>${p.name}</h3>
+      <p>Price: ${p.price} ብር</p>
+      <p>Seller: ${p.seller}</p>
+      <p>Phone: ${p.phone}</p>
+    `;
+    container.appendChild(div);
+  });
+}
+
+document.getElementById("productForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  let product = {
+    name: document.getElementById("name").value,
+    price: document.getElementById("price").value,
+    seller: document.getElementById("seller").value,
+    phone: document.getElementById("phone").value
+  };
+
+  products.push(product);
+  localStorage.setItem("products", JSON.stringify(products));
+
+  displayProducts();
+  document.getElementById("productForm").reset();
+});
+
+displayProducts();
+</script>
+</body>
+</html>
